@@ -47,6 +47,32 @@
 9. حذف کامل
 0. خروج
 
+
+## ⚙️ مراحل نصب:
+
+وارد محیط CLI شده و پروژه را کلون کنید:
+
+```
+git clone https://github.com/sMohammad14/tuser-a-simple-SSH-tunnel-user-manager.git
+```
+وارد دایرکتوری برنامه بشوید:
+
+```
+cd tuser-a-simple-SSH-tunnel-user-manager
+```
+
+اسکریت نصب را اجرا کنید:
+
+```
+bash tuser-install.sh
+```
+
+پس از مشاهد پیام نصب موفق، با کامند نیز وارد منو برنامه شوید:
+
+```
+tuser
+```
+
 ## 🔮 به‌روزرسانی آینده
 
 به عنوان آپدیت بعدی، محدودیت حجم هم اضافه خواهد شد.
@@ -109,6 +135,32 @@ The program menu includes:
 8. Backup / Restore
 9. Complete removal
 0. Exit
+
+
+## ⚙️ Installation Steps:
+
+Enter the CLI environment and clone the project:
+
+```
+git clone https://github.com/sMohammad14/tuser-a-simple-SSH-tunnel-user-manager.git
+```
+Enter the program directory:
+
+```
+cd tuser-a-simple-SSH-tunnel-user-manager
+```
+
+Run the installation script:
+
+```
+bash tuser-install.sh
+```
+
+After seeing the successful installation message, enter the program menu with this command:
+
+```
+tuser
+```
 
 ## 🔮 Future Update
 
