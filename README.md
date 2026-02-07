@@ -19,6 +19,8 @@
   - تعیین محدودیت استفاده همزمان از یک اکانت
   - بکاپ گیری و رستور بکاپ
 - همچنین میتونید به راحتی تمام برنامه رو از روی سیستم به همراه فایل ها و دیتا بیس و حتی یوزر های ایجاد شده با این برنامه حذف کنید.
+- **مدت زمان:** اگر مقداری وارد نکنید 30 روز خواهد بود و اگر 0 وارد کنید بدون انقضا خواهد بود.
+- **اتصال همزمان:** اگر مقداری وارد نکنید 1 اتصال همزمان مجاز خواهد بود و اگر 0 وارد کنید بدون محدودیت اتصال همزمان خواهد بود.
 - هنگام رستور بکاپ، این برنامه به صورت خودکار کاربران رو ایجاد خواهد کرد.
 
 ## ⚠️ نکات مهم
@@ -27,7 +29,7 @@
 - در نتیجه لازم هست قبل از رستور، بررسی کنید یوزری که توی فایل بکاپ هست، یوزری با همین یوزرنیم توی سیستم نباشه.
 - با حذف برنامه، بکاپ ها هم حذف میشن.
 - مسیر فایل های بکاپ: `/opt/tuser/backups`
-
+- رمزهای عبور در فایل‌های پشتیبان به صورت **cleartext** (متن آشکار) ذخیره می‌شوند. این طراحی عمدی است تا امکان ویرایش دستی رمزها قبل از عملیات بازیابی (restore) وجود داشته باشد.
 ## 📋 منوی برنامه
 
 منو برنامه شامل:
@@ -48,6 +50,12 @@
 به عنوان آپدیت بعدی، محدودیت حجم هم اضافه خواهد شد.
 
 
+## 📷 تصاویر
+![Main Menu](./screenshots/Main_Menu.png)
+
+![Adding User](./screenshots/Adding_user.png)
+
+![All Users](./screenshots/All_user.png)
 
 
 # English
@@ -79,6 +87,9 @@ With this program you can:
 - Therefore, before restoring, make sure that users in the backup file don't already exist in the system with the same username.
 - When you remove the program, backups will also be deleted.
 - Backup files path: `/opt/tuser/backups`
+- **Duration:** If you don't enter a value, it will be 30 days, and if you enter 0, it will be without expiration.
+- **Concurrent Connections:** If you don't enter a value, 1 concurrent connection will be allowed, and if you enter 0, it will be without concurrent connection limit.
+- Passwords are stored as **cleartext** in backup files. This is by design to allow manual editing of passwords before performing restore operations.
 
 ## 📋 Program Menu
 
@@ -99,6 +110,11 @@ The program menu includes:
 
 As a future update, data usage limits will be added.
 
----
 
-This tool is designed for server administrators who want to restrict user access to **secure SSH tunneling only**.
+## 📷 ScreenShots
+
+![Main Menu](./screenshots/Main_Menu.png)
+
+![Adding User](./screenshots/Adding_user.png)
+
+![All Users](./screenshots/All_user.png)
