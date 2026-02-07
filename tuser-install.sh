@@ -14,6 +14,66 @@ apt-get update -qq && apt-get install -y jq -qq
 echo "Creating application directories..."
 mkdir -p /opt/tuser/backups
 
+echo "Installing connection limiter..."
+cat << 'EOF' > /opt/tuser/tuser_limit.sh
+#!/bin/bash
+JSON_FILE="/opt/tuser/db.json"
+last_check=""
+while true; do
+    current_sessions=$(ps aux | grep "sshd: " | grep -v "\[" | grep -v grep | md5sum | awk '{print $1}')
+    if [[ "$current_sessions" != "$last_check" ]]; then
+        users=$(jq -c '.[]' "$JSON_FILE" 2>/dev/null)
+        echo "$users" | while read -r user_data; do
+            username=$(echo "$user_data" | jq -r '.username')
+            conn_limit=$(echo "$user_data" | jq -r '.conn_limit')
+            status=$(echo "$user_data" | jq -r '.status')
+            if [ "$status" = "disabled" ] || [ "$conn_limit" -eq 0 ]; then
+                continue
+            fi
+            sessions=$(ps -eo pid,etime,cmd | grep "sshd: $username$" | grep -v grep | sort -k2 -r)
+            session_count=$(echo "$sessions" | wc -l)
+            if [ "$session_count" -gt "$conn_limit" ]; then
+                counter=0
+                echo "$sessions" | while read -r session; do
+                    if [ -n "$session" ]; then
+                        pid=$(echo "$session" | awk '{print $1}')
+                        counter=$((counter + 1))
+                        if [ "$counter" -gt "$conn_limit" ]; then
+                            kill -9 "$pid" 2>/dev/null
+                        fi
+                    fi
+                done
+            fi
+        done
+        last_check="$current_sessions"
+    fi
+    sleep 1
+done
+EOF
+
+chmod +x /opt/tuser/tuser_limit.sh
+
+cat << 'EOF' > /etc/systemd/system/tuser_limit.service
+[Unit]
+Description=TUser Connection Limiter
+After=network.target sshd.service
+Wants=sshd.service
+
+[Service]
+Type=simple
+ExecStart=/opt/tuser/tuser_limit.sh
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable tuser_limit.service
+systemctl start tuser_limit.service
+
 echo "Writing the main application to /usr/local/bin/tuser..."
 cat << 'EOF' > /usr/local/bin/tuser
 #!/bin/bash
@@ -206,15 +266,22 @@ full_uninstall() {
     echo "WARNING: This will delete ALL users created by this tool and the database."
     read -p "Type 'YES' to confirm: " confirm
     if [[ "$confirm" != "YES" ]]; then echo "Aborted."; return; fi
+    
+    systemctl stop tuser_limit.service
+    systemctl disable tuser_limit.service
+    rm -f /etc/systemd/system/tuser_limit.service
+    
     jq -r '.[].username' "$DB_FILE" | while read -r user; do
         kill_user_sessions "$user"
         userdel -r -f "$user" 2>/dev/null
         sed -i "/# TUSER_START_$user/,/# TUSER_END_$user/d" "$SSH_CONFIG"
     done
+    
     rm -rf /opt/tuser
     rm -f /usr/local/bin/tuser
     crontab -l | grep -v "tuser --cron" | crontab -
     reload_ssh
+    systemctl daemon-reload
     echo "Uninstalled completely."
     exit 0
 }
