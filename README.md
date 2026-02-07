@@ -29,6 +29,8 @@
 - در نتیجه لازم هست قبل از رستور، بررسی کنید یوزری که توی فایل بکاپ هست، یوزری با همین یوزرنیم توی سیستم نباشه.
 - با حذف برنامه، بکاپ ها هم حذف میشن.
 - مسیر فایل های بکاپ: `/opt/tuser/backups`
+- برای بررسی اعتبار اکانت و قطع ارتباط پس از مدت مجازف این برنامه ساعت 03:00AM این بررسی رو انجام میده و اکانت رو غیر فعال میکنه، یعنی کاربری که مثلا تا تاریخ 2026/07/02 اعتبار داره، ساعت 03:00AM تاریخ 2026/07/03 اکانتش غیر فعال خواهد شد.
+- هنگام نصب برنامه، ساعت سیستم به ساعت ایران تغییر میکنه. (برای تضمبن عملکرد غیر فعال سازی خودکار اکانت ها). میتونید بعد از نصب، تاریخ سیستم رو مجددا تغییر بدید.
 - رمزهای عبور در فایل‌های پشتیبان به صورت **cleartext** (متن آشکار) ذخیره می‌شوند. این طراحی عمدی است تا امکان ویرایش دستی رمزها قبل از عملیات بازیابی (restore) وجود داشته باشد.
 ## 📋 منوی برنامه
 
@@ -89,6 +91,8 @@ With this program you can:
 - Backup files path: `/opt/tuser/backups`
 - **Duration:** If you don't enter a value, it will be 30 days, and if you enter 0, it will be without expiration.
 - **Concurrent Connections:** If you don't enter a value, 1 concurrent connection will be allowed, and if you enter 0, it will be without concurrent connection limit.
+- To check account validity and terminate connections after the allowed period, this program performs the check at `03:00` AM and disables the account. For example, if a user is valid until 2026/07/02, their account will be disabled at 03:00 AM on 2026/07/03.
+- During program installation, the system time is changed to Iran time `(Asia/Tehran)`. This ensures the proper functioning of the automatic account deactivation feature. You can change the system date/time again after installation if needed.
 - Passwords are stored as **cleartext** in backup files. This is by design to allow manual editing of passwords before performing restore operations.
 
 ## 📋 Program Menu
