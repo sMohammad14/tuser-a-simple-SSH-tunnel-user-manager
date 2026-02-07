@@ -5,6 +5,9 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+echo "Setting time to Tehran..."
+timedatectl set-timezone Asia/Tehran
+
 echo "Installing dependencies..."
 apt-get update -qq && apt-get install -y jq -qq
 
